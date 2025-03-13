@@ -1,10 +1,13 @@
-import { Button } from "./components/ui/button";
+import Router from "./router";
+import { Toaster } from "./components/ui/sonner";
+import { AuthProvider } from "./contexts/auth.context";
 
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <AuthProvider>
+      <Router />
+      <Toaster />
+    </AuthProvider>
   );
 }
 
