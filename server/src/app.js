@@ -12,6 +12,7 @@ import topicsRouter from "./routes/topics.route.js";
 import subtopicsRouter from "./routes/subtopics.route.js";
 import modulesRouter from "./routes/modules.route.js";
 import conceptsRouter from "./routes/concepts.route.js";
+import formulasRouter from "./routes/formulas.route.js";
 
 dotenv.config();
 const app = express();
@@ -42,6 +43,7 @@ app.use("/topics", topicsRouter);
 app.use("/subtopics", subtopicsRouter);
 app.use("/modules", modulesRouter);
 app.use("/concepts", conceptsRouter);
+app.use("/formulas", formulasRouter);
 
 app.all("*", async () => {
   throw new NotFoundError("Route not found");
