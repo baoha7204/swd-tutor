@@ -23,7 +23,6 @@ const conceptSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Formula",
-        default: true,
       },
     ],
   },

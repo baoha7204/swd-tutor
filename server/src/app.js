@@ -9,6 +9,7 @@ import authRouter from "./routes/auth.route.js";
 import usersRouter from "./routes/users.route.js";
 import subjectsRouter from "./routes/subjects.route.js";
 import topicsRouter from "./routes/topics.route.js";
+import subtopicsRouter from "./routes/subtopics.route.js";
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,7 @@ app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/subjects", subjectsRouter);
 app.use("/topics", topicsRouter);
+app.use("/subtopics", subtopicsRouter);
 app.all("*", async () => {
   throw new NotFoundError("Route not found");
 });

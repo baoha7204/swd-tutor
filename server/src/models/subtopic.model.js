@@ -4,8 +4,13 @@ const subtopicSchema = new Schema(
   {
     name: { type: String, required: true, unique: true },
     position: { type: Number, required: true, unique: true },
-    diffucultyScore: { type: Number, required: true },
+    difficultyScore: { type: Number, required: true },
     estimatedStudyMinutes: { type: Number, required: true },
+    topic: {
+      type: Schema.Types.ObjectId,
+      ref: "Topic",
+      required: true,
+    },
     modules: [
       {
         type: Schema.Types.ObjectId,
