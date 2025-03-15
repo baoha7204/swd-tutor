@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import Subject from "../models/subject.model.js";
 import Topic from "../models/topic.model.js";
+import Concept from "../models/concept.model.js";
 
 const getSubjects = async (req, res) => {
   // Get all subjects, active ones by default
@@ -27,14 +28,28 @@ const getSubjects = async (req, res) => {
 const getSubject = async (req, res) => {
   const { id } = req.params;
   const onlyActive = req.query.active !== "false";
+  const includeConcepts = req.query.includeConcepts === "true";
 
-  const subject = await Subject.findById(id).populate({
+  let query = Subject.findById(id);
+
+  // Populate topics
+  query = query.populate({
     path: "topics",
     select: "id name position difficultyRange estimatedStudyHours isActive",
     match: onlyActive ? { isActive: true } : {},
     options: { sort: { position: 1 } },
   });
 
+  // Optionally populate concepts
+  if (includeConcepts) {
+    query = query.populate({
+      path: "concepts",
+      select: "id name symbolNotation difficultyLevel",
+      options: { sort: { difficultyLevel: 1 } },
+    });
+  }
+
+  const subject = await query;
   res.send(subject);
 };
 
@@ -96,11 +111,16 @@ const hardDeleteSubject = async (req, res) => {
   session.startTransaction();
 
   try {
-    // Check if there are any topics associated with this subject
+    // Check if there are any topics or concepts associated with this subject
     const topicsCount = await Topic.countDocuments({ subject: id });
+    const conceptsCount = await Concept.countDocuments({ subject: id });
 
     if (topicsCount > 0) {
       throw new BadRequestError("Cannot delete subject with existing topics");
+    }
+
+    if (conceptsCount > 0) {
+      throw new BadRequestError("Cannot delete subject with existing concepts");
     }
 
     await Subject.findByIdAndDelete(id, { session });

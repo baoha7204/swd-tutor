@@ -19,6 +19,11 @@ const conceptSchema = new Schema(
       type: Number,
       required: true,
     },
+    subject: {
+      type: Schema.Types.ObjectId,
+      ref: "Subject",
+      required: true,
+    },
     formula: [
       {
         type: Schema.Types.ObjectId,

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import ModuleType from "../data/module-type";
+import ModuleType from "../data/module-type.js";
 
 const moduleSchema = new Schema(
   {
@@ -18,6 +18,11 @@ const moduleSchema = new Schema(
       max: 5,
     },
     estimatedMinutes: { type: Number, required: true },
+    subtopic: {
+      type: Schema.Types.ObjectId,
+      ref: "Subtopic",
+      required: true,
+    },
     excercises: [
       {
         type: Schema.Types.ObjectId,

@@ -19,6 +19,12 @@ const subjectSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    concepts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Concept",
+      },
+    ],
     topics: [
       {
         type: Schema.Types.ObjectId,

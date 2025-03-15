@@ -41,12 +41,20 @@ subtopicsRouter.put(
   subtopicsController.putEditSubtopic
 );
 
-// DELETE /subtopics/:id
+// DELETE /subtopics/soft/:id
 subtopicsRouter.delete(
-  "/:id",
+  "/soft/:id",
   subtopicIdValidator,
   requestValidation,
-  subtopicsController.deleteSubtopic
+  subtopicsController.softDeleteSubtopic
+);
+
+// DELETE /subtopics/hard/:id
+subtopicsRouter.delete(
+  "/hard/:id",
+  subtopicIdValidator,
+  requestValidation,
+  subtopicsController.hardDeleteSubtopic
 );
 
 export default subtopicsRouter;

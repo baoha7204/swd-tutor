@@ -18,6 +18,11 @@ const formulaSchema = new Schema(
       type: String,
       required: true,
     },
+    concept: {
+      type: Schema.Types.ObjectId,
+      ref: "Concept",
+      required: true,
+    },
   },
   {
     timestamps: true,

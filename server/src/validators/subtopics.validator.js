@@ -30,10 +30,15 @@ export const addSubtopicValidator = [
   body("position")
     .isInt({ min: 1 })
     .withMessage("Position must be a positive integer")
-    .custom(async (value) => {
-      const existingSubtopic = await Subtopic.findOne({ position: value });
+    .custom(async (value, { req }) => {
+      // Only check for duplicates within the same topic
+      const topicId = req.body.topicId;
+      const existingSubtopic = await Subtopic.findOne({
+        position: value,
+        topic: topicId,
+      });
       if (existingSubtopic) {
-        throw new BadRequestError("Subtopic with this position already exists");
+        throw new BadRequestError("Position already taken in this topic");
       }
       return true;
     }),
@@ -43,6 +48,10 @@ export const addSubtopicValidator = [
   body("estimatedStudyMinutes")
     .isInt({ min: 1 })
     .withMessage("Estimated study minutes must be a positive integer"),
+  body("isActive")
+    .optional()
+    .isBoolean()
+    .withMessage("isActive must be a boolean value"),
 ];
 
 export const subtopicIdValidator = [
@@ -81,4 +90,8 @@ export const editSubtopicValidator = [
   body("estimatedStudyMinutes")
     .isInt({ min: 1 })
     .withMessage("Estimated study minutes must be a positive integer"),
+  body("isActive")
+    .optional()
+    .isBoolean()
+    .withMessage("isActive must be a boolean value"),
 ];

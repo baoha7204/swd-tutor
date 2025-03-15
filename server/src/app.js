@@ -10,6 +10,8 @@ import usersRouter from "./routes/users.route.js";
 import subjectsRouter from "./routes/subjects.route.js";
 import topicsRouter from "./routes/topics.route.js";
 import subtopicsRouter from "./routes/subtopics.route.js";
+import modulesRouter from "./routes/modules.route.js";
+import conceptsRouter from "./routes/concepts.route.js";
 
 dotenv.config();
 const app = express();
@@ -38,6 +40,9 @@ app.use("/users", usersRouter);
 app.use("/subjects", subjectsRouter);
 app.use("/topics", topicsRouter);
 app.use("/subtopics", subtopicsRouter);
+app.use("/modules", modulesRouter);
+app.use("/concepts", conceptsRouter);
+
 app.all("*", async () => {
   throw new NotFoundError("Route not found");
 });

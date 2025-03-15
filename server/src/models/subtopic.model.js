@@ -6,6 +6,10 @@ const subtopicSchema = new Schema(
     position: { type: Number, required: true, unique: true },
     difficultyScore: { type: Number, required: true },
     estimatedStudyMinutes: { type: Number, required: true },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     topic: {
       type: Schema.Types.ObjectId,
       ref: "Topic",
@@ -15,12 +19,6 @@ const subtopicSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Module",
-      },
-    ],
-    concepts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Concept",
       },
     ],
   },
