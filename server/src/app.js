@@ -8,6 +8,7 @@ import { currentUser, errorHandler, NotFoundError } from "@bhtickix/common";
 import authRouter from "./routes/auth.route.js";
 import usersRouter from "./routes/users.route.js";
 import subjectsRouter from "./routes/subjects.route.js";
+import topicsRouter from "./routes/topics.route.js";
 
 dotenv.config();
 const app = express();
@@ -34,6 +35,7 @@ app.use(currentUser);
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/subjects", subjectsRouter);
+app.use("/topics", topicsRouter);
 app.all("*", async () => {
   throw new NotFoundError("Route not found");
 });

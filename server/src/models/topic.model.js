@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import DifficultyRange from "../data/difficulty-range";
+import DifficultyRange from "../data/difficulty-range.js";
 
 const topicSchema = new Schema(
   {
@@ -20,6 +20,15 @@ const topicSchema = new Schema(
     },
     estimatedStudyHours: {
       type: Number,
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    subject: {
+      type: Schema.Types.ObjectId,
+      ref: "Subject",
       required: true,
     },
     subtopics: [

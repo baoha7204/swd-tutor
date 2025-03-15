@@ -1,40 +1,53 @@
-import { BadRequestError, NotFoundError } from "@bhtickix/common";
+import { BadRequestError } from "@bhtickix/common";
+import mongoose from "mongoose";
+
 import Subject from "../models/subject.model.js";
+import Topic from "../models/topic.model.js";
 
 const getSubjects = async (req, res) => {
   // Get all subjects, active ones by default
   const onlyActive = req.query.active !== "false";
+  const includeTopics = req.query.includeTopics === "true";
   const filter = onlyActive ? { isActive: true } : {};
 
-  const subjects = await Subject.find(filter);
+  let query = Subject.find(filter);
+
+  if (includeTopics) {
+    query = query.populate({
+      path: "topics",
+      select: "id name position difficultyRange estimatedStudyHours isActive",
+      match: onlyActive ? { isActive: true } : {},
+    });
+  }
+
+  const subjects = await query;
   res.send(subjects);
 };
 
 const getSubject = async (req, res) => {
   const { id } = req.params;
+  const onlyActive = req.query.active !== "false";
 
-  const subject = await Subject.findById(id);
-  if (!subject) {
-    throw new NotFoundError("Subject not found");
-  }
+  const subject = await Subject.findById(id).populate({
+    path: "topics",
+    select: "id name position difficultyRange estimatedStudyHours isActive",
+    match: onlyActive ? { isActive: true } : {},
+    options: { sort: { position: 1 } },
+  });
 
   res.send(subject);
 };
 
 const postAddSubject = async (req, res) => {
-  const { name, iconUrl, description } = req.body;
-
-  // Check if subject already exists
-  const existingSubject = await Subject.findOne({ name });
-  if (existingSubject) {
-    throw new BadRequestError("Subject already exists");
-  }
+  const { name, iconUrl, description, isActive } = req.body;
 
   const subject = new Subject({
     name,
     iconUrl,
     description,
   });
+
+  if (isActive) subject.isActive = isActive;
 
   await subject.save();
   res.status(201).send(subject);
@@ -45,10 +58,6 @@ const putEditSubject = async (req, res) => {
   const { name, iconUrl, description, isActive } = req.body;
 
   const subject = await Subject.findById(id);
-  if (!subject) {
-    throw new NotFoundError("Subject not found");
-  }
-
   // Check if name is being changed and if it already exists
   if (name !== subject.name) {
     const existingSubject = await Subject.findOne({ name });
@@ -69,14 +78,10 @@ const putEditSubject = async (req, res) => {
   res.send(subject);
 };
 
-// Switch isActive = false
 const softDeleteSubject = async (req, res) => {
   const { id } = req.params;
 
   const subject = await Subject.findById(id);
-  if (!subject) {
-    throw new NotFoundError("Subject not found");
-  }
 
   subject.isActive = false;
   await subject.save();
@@ -84,21 +89,30 @@ const softDeleteSubject = async (req, res) => {
   res.send(subject);
 };
 
-// Check if contains topics
 const hardDeleteSubject = async (req, res) => {
   const { id } = req.params;
 
-  const subject = await Subject.findById(id);
-  if (!subject) {
-    throw new NotFoundError("Subject not found");
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  if (subject.topics.length > 0) {
-    throw new BadRequestError("Cannot delete subject with existing topics");
-  }
+  try {
+    // Check if there are any topics associated with this subject
+    const topicsCount = await Topic.countDocuments({ subject: id });
 
-  await Subject.findByIdAndDelete(id);
-  res.status(204).send({});
+    if (topicsCount > 0) {
+      throw new BadRequestError("Cannot delete subject with existing topics");
+    }
+
+    await Subject.findByIdAndDelete(id, { session });
+    await session.commitTransaction();
+
+    res.status(204).send({});
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
 };
 
 export default {

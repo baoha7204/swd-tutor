@@ -9,8 +9,6 @@ async function bootstrap() {
   if (!process.env.CLIENT_BASE_URL)
     throw new Error("CLIENT_BASE_URL must be defined");
 
-  console.log(process.env.MONGO_URI);
-
   try {
     await mongoose.connect(process.env.MONGO_URI);
   } catch (err) {
