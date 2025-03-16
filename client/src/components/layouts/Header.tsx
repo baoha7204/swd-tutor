@@ -67,15 +67,15 @@ const Header = ({ logout, currentUser }: HeaderProps) => {
                 </Link>
               </>
             )}
-            <Link to="/lesson" className="text-[#4B5563] hover:text-[#2563EB]">
-              Lesson
+            <Link to="/topics" className="text-[#4B5563] hover:text-[#2563EB]">
+              Topics
             </Link>
-            <Link
+            {/* <Link
               to="/community"
               className="text-[#4B5563] hover:text-[#2563EB]"
             >
               Community
-            </Link>
+            </Link> */}
           </nav>
         </div>
 
