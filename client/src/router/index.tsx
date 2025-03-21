@@ -1,39 +1,52 @@
+'use client';
+
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
   Outlet,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from '@/components/ui/spinner';
 
 // Layouts
-import DefaultLayout from "@/components/layouts/DefaultLayout";
-import AuthLayout from "@/components/layouts/AuthLayout";
+import DefaultLayout from '@/components/layouts/DefaultLayout';
+import AuthLayout from '@/components/layouts/AuthLayout';
 
 // Public pages
-import HomePage from "@/pages/Home";
-import LoginPage from "@/pages/Authentication/Login";
-import RegisterPage from "@/pages/Authentication/Register";
+import HomePage from '@/pages/Home';
+import LoginPage from '@/pages/Authentication/Login';
+import RegisterPage from '@/pages/Authentication/Register';
 
 // Protected pages
+import Dashboard from '@/pages/Dashboard';
+import TopicsPage from '@/pages/TopicsPage';
+import SubTopicsPage from '@/pages/SubTopicsPage';
+import ModulesPage from '@/pages/ModulesPage';
+import ExercisePage from '@/pages/ExercisePage';
+// import ReviewPage from '@/pages/ReviewPage';
+// import CommunityPage from '@/pages/CommunityPage';
+// import ProfilePage from '@/pages/ProfilePage';
 
 // Admin pages
+// import AdminDashboard from '@/pages/Admin/Dashboard';
+// import AdminUsersPage from '@/pages/Admin/Users';
+// import AdminContentPage from '@/pages/Admin/Content';
 
-import { useAuth } from "@/hooks/useAuth";
-import UnauthorizedPage from "@/pages/403";
-import NotFoundPage from "@/pages/404";
+import { useAuth } from '@/hooks/useAuth';
+import UnauthorizedPage from '@/pages/403';
+import NotFoundPage from '@/pages/404';
 
 // Protect routes that require authentication
 const ProtectedRoute = () => {
   const { currentUser, isLoading } = useAuth();
 
   if (isLoading) {
-    return <Spinner size="lg" className="bg-black dark:bg-white" />;
+    return <Spinner size='lg' className='bg-black dark:bg-white' />;
   }
 
   if (!currentUser) {
-    return <Navigate to="/unauthorized" />;
+    return <Navigate to='/unauthorized' />;
   }
 
   return <Outlet />;
@@ -43,11 +56,11 @@ const AdminRoute = () => {
   const { currentUser, isLoading } = useAuth();
 
   if (isLoading) {
-    return <Spinner size="lg" className="bg-black dark:bg-white" />;
+    return <Spinner size='lg' className='bg-black dark:bg-white' />;
   }
 
   if (!currentUser || !currentUser.isAdmin) {
-    return <Navigate to="/unauthorized" />;
+    return <Navigate to='/unauthorized' />;
   }
 
   return <Outlet />;
@@ -60,11 +73,11 @@ const Router = () => {
       element: <AuthLayout />,
       children: [
         {
-          path: "/login",
+          path: '/login',
           element: <LoginPage />,
         },
         {
-          path: "/register",
+          path: '/register',
           element: <RegisterPage />,
         },
       ],
@@ -74,21 +87,38 @@ const Router = () => {
       element: <DefaultLayout />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: "unauthorized", element: <UnauthorizedPage /> },
-        { path: "*", element: <NotFoundPage /> },
+        { path: 'unauthorized', element: <UnauthorizedPage /> },
+        { path: '*', element: <NotFoundPage /> },
         // Protected route
         {
           element: <ProtectedRoute />,
           children: [
-            { path: "dashboard", element: <div>Dashboard Page</div> },
-            { path: "profile", element: <div>Profile Page</div> },
+            { path: 'dashboard', element: <Dashboard /> },
+            // { path: 'profile', element: <ProfilePage /> },
+            // { path: 'review', element: <ReviewPage /> },
+            // { path: 'community', element: <CommunityPage /> },
+            // Topics navigation flow
+            { path: 'topics', element: <TopicsPage /> },
+            { path: 'topics/:topicId', element: <SubTopicsPage /> },
+            {
+              path: 'topics/:topicId/subtopics/:subtopicId',
+              element: <ModulesPage />,
+            },
+            {
+              path: 'topics/:topicId/subtopics/:subtopicId/modules/:moduleId',
+              element: <ExercisePage />,
+            },
           ],
         },
         // Admin route
         {
-          path: "admin",
+          path: 'admin',
           element: <AdminRoute />,
-          children: [{ index: true, element: <div>Admin Dashboard</div> }],
+          children: [
+            // { index: true, element: <AdminDashboard /> },
+            // { path: 'users', element: <AdminUsersPage /> },
+            // { path: 'content', element: <AdminContentPage /> },
+          ],
         },
       ],
     },
