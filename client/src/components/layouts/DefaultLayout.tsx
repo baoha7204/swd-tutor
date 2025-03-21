@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import type React from 'react';
-import { useState } from 'react';
-import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
-import { Layout as AntLayout, Avatar, Badge, Button, Dropdown } from 'antd';
+import type React from "react";
+import { useState } from "react";
+import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
+import { Layout as AntLayout, Avatar, Badge, Button, Dropdown } from "antd";
 import {
   BellOutlined,
   TrophyOutlined,
@@ -11,10 +11,10 @@ import {
   SettingOutlined,
   LogoutOutlined,
   MenuOutlined,
-} from '@ant-design/icons';
-import styled from 'styled-components';
-import Logo from '../logo/index';
-import { useAuth } from '@/hooks/useAuth';
+} from "@ant-design/icons";
+import styled from "styled-components";
+import Logo from "../logo/index";
+import { useAuth } from "@/hooks/useAuth";
 
 const { Header, Content } = AntLayout;
 
@@ -63,7 +63,7 @@ const NavItem = styled(Link)<{ active?: boolean }>`
   padding: 0 16px;
   color: ${(props) =>
     props.active ? props.theme.colors.primary : props.theme.colors.text};
-  font-weight: ${(props) => (props.active ? '600' : '400')};
+  font-weight: ${(props) => (props.active ? "600" : "400")};
   height: 64px;
   display: flex;
   align-items: center;
@@ -88,41 +88,41 @@ const DefaultLayout: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
 
-  const currentPath = location.pathname.split('/')[1] || 'home';
+  const currentPath = location.pathname.split("/")[1] || "home";
 
   const userMenuItems = [
     {
-      key: 'profile',
+      key: "profile",
       icon: <UserOutlined />,
-      label: 'Profile',
-      onClick: () => navigate('/profile'),
+      label: "Profile",
+      onClick: () => navigate("/profile"),
     },
     {
-      key: 'settings',
+      key: "settings",
       icon: <SettingOutlined />,
-      label: 'Settings',
-      onClick: () => navigate('/settings'),
+      label: "Settings",
+      onClick: () => navigate("/settings"),
     },
     {
-      type: 'divider',
+      type: "divider",
     },
     {
-      key: 'logout',
+      key: "logout",
       icon: <LogoutOutlined />,
-      label: 'Logout',
+      label: "Logout",
       onClick: () => {
         logout();
-        navigate('/login');
+        navigate("/login");
       },
     },
   ];
 
   const navItems = [
-    { key: 'home', label: 'Home', path: '/' },
-    { key: 'review', label: 'Review', path: '/review' },
-    { key: 'lessons', label: 'Lessons', path: '/topics' },
-    { key: 'dashboard', label: 'Dashboard', path: '/dashboard' },
-    { key: 'community', label: 'Community', path: '/community' },
+    { key: "home", label: "Home", path: "/" },
+    // { key: "review", label: "Review", path: "/review" },
+    { key: "topics", label: "Topics", path: "/topics" },
+    { key: "dashboard", label: "Dashboard", path: "/dashboard" },
+    // { key: "community", label: "Community", path: "/community" },
   ];
 
   return (
@@ -137,7 +137,7 @@ const DefaultLayout: React.FC = () => {
                 to={item.path}
                 active={
                   currentPath === item.key ||
-                  (item.key === 'home' && currentPath === '')
+                  (item.key === "home" && currentPath === "")
                 }
               >
                 {item.label}
@@ -148,34 +148,34 @@ const DefaultLayout: React.FC = () => {
 
         <HeaderRight>
           <MobileMenuButton
-            type='text'
+            type="text"
             icon={<MenuOutlined />}
             onClick={() => setMobileMenuVisible(!mobileMenuVisible)}
           />
 
           {currentUser && (
             <>
-              <Badge count={5} size='small'>
+              <Badge count={5} size="small">
                 <Button
-                  type='text'
+                  type="text"
                   icon={<BellOutlined />}
-                  size='large'
-                  shape='circle'
+                  size="large"
+                  shape="circle"
                 />
               </Badge>
               <Badge
-                count={<TrophyOutlined style={{ color: '#faad14' }} />}
+                count={<TrophyOutlined style={{ color: "#faad14" }} />}
                 offset={[-5, 5]}
               >
-                <Button type='text' size='small'>
+                <Button type="text" size="small">
                   {currentUser?.days || 0} days
                 </Button>
               </Badge>
-              <Dropdown menu={{ items: userMenuItems }} placement='bottomRight'>
+              <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
                 <Avatar
                   src={currentUser?.avatar}
-                  size='default'
-                  style={{ cursor: 'pointer' }}
+                  size="default"
+                  style={{ cursor: "pointer" }}
                 />
               </Dropdown>
             </>
@@ -183,10 +183,10 @@ const DefaultLayout: React.FC = () => {
 
           {!currentUser && (
             <>
-              <Button type='link' onClick={() => navigate('/login')}>
+              <Button type="link" onClick={() => navigate("/login")}>
                 Login
               </Button>
-              <Button type='primary' onClick={() => navigate('/register')}>
+              <Button type="primary" onClick={() => navigate("/register")}>
                 Sign Up
               </Button>
             </>
