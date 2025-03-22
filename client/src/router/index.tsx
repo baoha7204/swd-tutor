@@ -91,7 +91,7 @@ const Router = () => {
         { path: '*', element: <NotFoundPage /> },
         // Protected route
         {
-          element: <ProtectedRoute />,
+          // element: <ProtectedRoute />,
           children: [
             { path: 'dashboard', element: <Dashboard /> },
             // { path: 'profile', element: <ProfilePage /> },

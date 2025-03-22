@@ -35,8 +35,9 @@ const StyledHeader = styled(Header)`
   height: 64px;
 `;
 
-const StyledContent = styled(Content)`
+const StyledContent = styled(Content)<{ isHomepage?: boolean }>`
   background-color: ${(props) => props.theme.colors.background};
+  padding: ${(props) => (props.isHomepage ? '0' : '24px')};
 `;
 
 const HeaderLeft = styled.div`
@@ -87,6 +88,7 @@ const DefaultLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+  const isHomepage = location.pathname === '/'; // Kiểm tra nếu là trang homepage
 
   const currentPath = location.pathname.split('/')[1] || 'home';
 
@@ -153,35 +155,35 @@ const DefaultLayout: React.FC = () => {
             onClick={() => setMobileMenuVisible(!mobileMenuVisible)}
           />
 
-          {currentUser && (
-            <>
-              <Badge count={5} size='small'>
-                <Button
-                  type='text'
-                  icon={<BellOutlined />}
-                  size='large'
-                  shape='circle'
-                />
-              </Badge>
-              <Badge
-                count={<TrophyOutlined style={{ color: '#faad14' }} />}
-                offset={[-5, 5]}
-              >
-                <Button type='text' size='small'>
-                  {currentUser?.days || 0} days
-                </Button>
-              </Badge>
-              <Dropdown menu={{ items: userMenuItems }} placement='bottomRight'>
-                <Avatar
-                  src={currentUser?.avatar}
-                  size='default'
-                  style={{ cursor: 'pointer' }}
-                />
-              </Dropdown>
-            </>
-          )}
+          {/* {currentUser && ( */}
+          <>
+            <Badge count={5} size='small'>
+              <Button
+                type='text'
+                icon={<BellOutlined />}
+                size='small'
+                shape='circle'
+              />
+            </Badge>
+            <Badge
+              count={<TrophyOutlined style={{ color: '#faad14' }} />}
+              offset={[-2, 4]}
+            >
+              <Button type='text' size='small'>
+                127 days
+              </Button>
+            </Badge>
+            <Dropdown menu={{ items: userMenuItems }} placement='bottomRight'>
+              <Avatar
+                src='./public/avatar.png'
+                size='default'
+                style={{ cursor: 'pointer' }}
+              />
+            </Dropdown>
+          </>
+          {/* )} */}
 
-          {!currentUser && (
+          {/* {!currentUser && (
             <>
               <Button type='link' onClick={() => navigate('/login')}>
                 Login
@@ -190,13 +192,13 @@ const DefaultLayout: React.FC = () => {
                 Sign Up
               </Button>
             </>
-          )}
+          )} */}
         </HeaderRight>
       </StyledHeader>
 
       {/* Mobile menu would go here */}
 
-      <StyledContent>
+      <StyledContent isHomepage={isHomepage}>
         <Outlet />
       </StyledContent>
     </StyledLayout>

@@ -10,6 +10,13 @@ import {
 
 const { Title, Paragraph } = Typography;
 
+const Container = styled.div`
+  all: unset;
+
+  padding: 0px !important;
+  margin: 0px !important;
+`;
+
 const HeroSection = styled.div`
   display: flex;
   align-items: center;
@@ -143,10 +150,20 @@ const AppStoreButtons = styled.div`
 
 const HomePage: React.FC = () => {
   return (
-    <>
+    <Container>
       <HeroSection>
         <HeroContent>
-          <Title level={1}>
+          <Title
+            level={1}
+            style={{
+              color: '#000',
+              fontFamily: 'Poppins',
+              fontSize: '36px',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              lineHeight: '36px' /* 100% */,
+            }}
+          >
             Learn Math Anytime, Anywhere, Easily and Enjoyably!
           </Title>
           <Paragraph style={{ fontSize: 16, marginBottom: 24 }}>
@@ -157,7 +174,7 @@ const HomePage: React.FC = () => {
           <div>
             <Link to='/register'>
               <Button type='primary' size='large' style={{ marginRight: 16 }}>
-                Bắt đầu học miễn phí
+                Start learning free
               </Button>
             </Link>
             <Button size='large'>Xem demo</Button>
@@ -173,7 +190,18 @@ const HomePage: React.FC = () => {
       </HeroSection>
 
       <FeaturesSection>
-        <Title level={2} style={{ marginBottom: 48 }}>
+        <Title
+          level={2}
+          style={{
+            color: '#000',
+            fontFamily: 'Poppins',
+            fontSize: '36px',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: '36px' /* 100% */,
+            marginBottom: 48,
+          }}
+        >
           Outstanding Features
         </Title>
 
@@ -219,7 +247,18 @@ const HomePage: React.FC = () => {
       </FeaturesSection>
 
       <TestimonialsSection>
-        <Title level={2} style={{ marginBottom: 48 }}>
+        <Title
+          level={2}
+          style={{
+            color: '#000',
+            fontFamily: 'Poppins',
+            fontSize: '36px',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: '36px' /* 100% */,
+            marginBottom: 48,
+          }}
+        >
           What Users Are Saying?
         </Title>
 
@@ -231,7 +270,14 @@ const HomePage: React.FC = () => {
                   <img src='./public/avatar.png' alt='Nguyễn Anh Tuấn' />
                 </TestimonialAvatar>
                 <TestimonialHeaderContent>
-                  <Title level={5}>Nguyễn Anh Tuấn</Title>
+                  <Title
+                    level={5}
+                    style={{
+                      margin: 0,
+                    }}
+                  >
+                    Nguyễn Anh Tuấn
+                  </Title>
                   <Paragraph type='secondary'>High grade student</Paragraph>
                 </TestimonialHeaderContent>
               </TestimonialHeader>
@@ -248,7 +294,14 @@ const HomePage: React.FC = () => {
                   <img src='./public/avatar.png' alt='Trần Thu Hà' />
                 </TestimonialAvatar>
                 <TestimonialHeaderContent>
-                  <Title level={5}>Trần Thu Hà</Title>
+                  <Title
+                    level={5}
+                    style={{
+                      margin: 0,
+                    }}
+                  >
+                    Trần Thu Hà
+                  </Title>
                   <Paragraph type='secondary'>Parents of students</Paragraph>
                 </TestimonialHeaderContent>
               </TestimonialHeader>
@@ -266,7 +319,14 @@ const HomePage: React.FC = () => {
                   <img src='./public/avatar.png' alt='Lê Văn Minh' />
                 </TestimonialAvatar>
                 <TestimonialHeaderContent>
-                  <Title level={5}>Lê Văn Minh</Title>
+                  <Title
+                    level={5}
+                    style={{
+                      margin: 0,
+                    }}
+                  >
+                    Lê Văn Minh
+                  </Title>
                   <Paragraph type='secondary'>Teacher</Paragraph>
                 </TestimonialHeaderContent>
               </TestimonialHeader>
@@ -296,7 +356,7 @@ const HomePage: React.FC = () => {
           </Button>
         </AppStoreButtons>
       </CtaSection>
-    </>
+    </Container>
   );
 };
 
