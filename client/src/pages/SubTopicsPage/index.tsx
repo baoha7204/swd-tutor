@@ -2,7 +2,19 @@
 
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import { Typography, Row, Col, Card, Progress, Breadcrumb } from 'antd';
+import {
+  Typography,
+  Row,
+  Col,
+  Card,
+  Progress,
+  Breadcrumb,
+  Space,
+  Avatar,
+  Tag,
+  Button,
+  Divider,
+} from 'antd';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -11,47 +23,221 @@ import {
   HistoryOutlined,
   ClockCircleOutlined,
   UserOutlined,
+  BookOutlined,
+  TrophyOutlined,
+  LineChartOutlined,
+  RocketOutlined,
+  ArrowRightOutlined,
+  CheckCircleOutlined,
+  BorderOutlined,
+  PercentageOutlined,
 } from '@ant-design/icons';
 
 const { Title, Text, Paragraph } = Typography;
 
-const StyledCard = styled(Card)`
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  margin-bottom: 24px;
+const TopicHeader = styled.div`
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.$color}15 0%,
+    ${(props) => props.$color}05 100%
+  );
+  padding: 40px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: ${(props) => props.$color}10;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 30%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: ${(props) => props.$color}08;
+    z-index: 0;
+  }
 `;
 
-const SubTopicCard = styled(Card)`
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  cursor: pointer;
+const StyledCard = styled(Card)`
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
   transition: all 0.3s ease;
   height: 100%;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-card-body {
+    padding: 24px;
   }
 `;
 
-const HistoricalFigure = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+const StatCard = styled(StyledCard)`
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.$color}10 0%,
+    ${(props) => props.$color}05 100%
+  );
+  border: 1px solid ${(props) => props.$color}20;
+
+  .icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: ${(props) => props.$color}15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 24px;
+    color: ${(props) => props.$color};
+  }
 `;
 
-const CircleAvatar = styled.div`
+const SubTopicCard = styled(StyledCard)`
+  cursor: pointer;
+  border-left: 4px solid ${(props) => props.$color || '#1890ff'};
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .progress-indicator {
+    height: 6px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    margin-top: 16px;
+    overflow: hidden;
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      background-color: ${(props) => props.$color};
+      width: ${(props) => props.$progress || 0}%;
+      transition: width 0.6s ease;
+    }
+  }
+`;
+
+const HistorySectionCard = styled(StyledCard)`
+  background: linear-gradient(160deg, #f8f9fa 0%, #f0f7ff 100%);
+  padding: 24px;
+  margin-bottom: 32px;
+`;
+
+const CircleAvatar = styled(Avatar)`
   width: 80px;
   height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 3px solid white;
+  margin-bottom: 12px;
+`;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+const ProgressTag = styled(Tag)<{ $progress: number }>`
+  margin: 0;
+  font-weight: 500;
+
+  background-color: ${(props) => {
+    if (props.$progress >= 80) return '#f6ffed';
+    if (props.$progress >= 40) return '#e6f7ff';
+    if (props.$progress > 0) return '#fff7e6';
+    return '#f5f5f5';
+  }};
+
+  border-color: ${(props) => {
+    if (props.$progress >= 80) return '#b7eb8f';
+    if (props.$progress >= 40) return '#91d5ff';
+    if (props.$progress > 0) return '#ffd591';
+    return '#d9d9d9';
+  }};
+
+  color: ${(props) => {
+    if (props.$progress >= 80) return '#52c41a';
+    if (props.$progress >= 40) return '#1890ff';
+    if (props.$progress > 0) return '#fa8c16';
+    return '#8c8c8c';
+  }};
+`;
+
+const DifficultyTag = styled(Tag)<{ $difficulty: string }>`
+  border-radius: 4px;
+  font-weight: 500;
+
+  background-color: ${(props) => {
+    if (props.$difficulty.toLowerCase() === 'beginner') return '#f6ffed';
+    if (props.$difficulty.toLowerCase() === 'intermediate') return '#e6f7ff';
+    return '#fff0f6';
+  }};
+
+  border-color: ${(props) => {
+    if (props.$difficulty.toLowerCase() === 'beginner') return '#b7eb8f';
+    if (props.$difficulty.toLowerCase() === 'intermediate') return '#91d5ff';
+    return '#ffadd2';
+  }};
+
+  color: ${(props) => {
+    if (props.$difficulty.toLowerCase() === 'beginner') return '#52c41a';
+    if (props.$difficulty.toLowerCase() === 'intermediate') return '#1890ff';
+    return '#eb2f96';
+  }};
+`;
+
+const PathNavigation = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+
+  a {
+    color: rgba(0, 0, 0, 0.45);
+    transition: color 0.3s;
+
+    &:hover {
+      color: #1890ff;
+    }
+  }
+
+  .divider {
+    margin: 0 8px;
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  .current {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+  }
+`;
+
+const CompleteBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-left: 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  .complete-icon {
+    margin-right: 4px;
   }
 `;
 
@@ -345,132 +531,297 @@ const SubTopicsPage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  const totalProgress =
+    topic.subTopics.reduce(
+      (sum: number, subtopic: any) => sum + subtopic.progress,
+      0
+    ) / topic.subTopics.length;
+  const completedSubtopics = topic.subTopics.filter(
+    (subtopic: any) => subtopic.progress === 100
+  ).length;
+
   return (
     <div>
-      {/* <Breadcrumb style={{ marginBottom: 16 }}>
-        <Breadcrumb.Item>
-          <Link to='/'>Home</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link to='/topics'>Topics</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{topic.name}</Breadcrumb.Item>
-      </Breadcrumb> */}
+      <PathNavigation>
+        <Link to='/topics'>Topics</Link>
+        <span className='divider'>/</span>
+        <span className='current'>{topic.name}</span>
+      </PathNavigation>
 
-      <Title level={2}>{topic.name}</Title>
-      <Paragraph type='secondary' style={{ marginBottom: 24 }}>
-        {topic.description}
-      </Paragraph>
+      <TopicHeader $color={topic.color}>
+        <Row gutter={[24, 24]} align='middle'>
+          <Col xs={24} md={16}>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <Space align='center'>
+                <div
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 12,
+                    background: `${topic.color}20`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 32,
+                    color: topic.color,
+                    marginRight: 16,
+                  }}
+                >
+                  {topic.id === 'algebra' && <FunctionOutlined />}
+                  {topic.id === 'geometry' && <BorderOutlined />}
+                  {topic.id === 'analysis' && <LineChartOutlined />}
+                  {topic.id === 'probability' && <PercentageOutlined />}
+                </div>
+                <div>
+                  <Title level={2} style={{ margin: 0, marginBottom: 8 }}>
+                    {topic.name}
+                  </Title>
+                  <Space size={16}>
+                    <Tag icon={<BookOutlined />} color={'blue'}>
+                      {topic.totalLessons} Modules
+                    </Tag>
+                    <Tag icon={<ClockCircleOutlined />} color={'yellow'}>
+                      {topic.estimatedDuration}
+                    </Tag>
+                    {completedSubtopics > 0 && (
+                      <CompleteBadge>
+                        <CheckCircleOutlined className='complete-icon' />
+                        {completedSubtopics} of {topic.subTopics.length}{' '}
+                        completed
+                      </CompleteBadge>
+                    )}
+                  </Space>
+                </div>
+              </Space>
 
-      <Row gutter={[24, 24]}>
-        <Col xs={24} md={8}>
-          <StyledCard>
-            <Title level={5}>Estimated Duration</Title>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <ClockCircleOutlined />
-              <Text>{topic.estimatedDuration}</Text>
+              <Paragraph
+                style={{ margin: '16px 0', fontSize: 16, maxWidth: 800 }}
+              >
+                {topic.description}
+              </Paragraph>
             </div>
-          </StyledCard>
-        </Col>
-        <Col xs={24} md={8}>
-          <StyledCard>
-            <Title level={5}>Total Modules</Title>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <FunctionOutlined />
-              <Text>{topic.totalLessons} modules</Text>
-            </div>
-          </StyledCard>
-        </Col>
-        <Col xs={24} md={8}>
-          <StyledCard>
-            <Title level={5}>Your Progress</Title>
-            <Progress percent={topic.progress} />
-          </StyledCard>
-        </Col>
-      </Row>
-
-      {/* <Title level={4} style={{ margin: "32px 0 16px" }}>
-        Historical Context
-      </Title>
-      <Row gutter={[24, 24]}>
-        {topic.historicalFigures.map((figure: any, index: number) => (
-          <Col key={index} xs={24} sm={8}>
-            <HistoricalFigure>
-              <CircleAvatar>
-                <img
-                  src={figure.image || "/placeholder.svg"}
-                  alt={figure.name}
-                />
-              </CircleAvatar>
-              <Text strong>{figure.name}</Text>
-              <Text type="secondary">{figure.title}</Text>
-              <Text type="secondary">({figure.years})</Text>
-            </HistoricalFigure>
           </Col>
-        ))}
-      </Row> */}
-
-      <Title level={4} style={{ margin: '32px 0 16px' }}>
-        Learning Path
-      </Title>
-      <Row gutter={[24, 24]}>
-        {topic.subTopics.map((subTopic: any) => (
-          <Col key={subTopic.id} xs={24} sm={12}>
-            <SubTopicCard onClick={() => handleSubTopicClick(subTopic.id)}>
+          <Col xs={24} md={8}>
+            <div style={{ position: 'relative', zIndex: 1 }}>
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginBottom: 16,
-                }}
-              >
-                <Title level={4} style={{ margin: 0 }}>
-                  {subTopic.name}
-                </Title>
-                <RightOutlined />
-              </div>
-              <Paragraph type='secondary'>{subTopic.description}</Paragraph>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
                   marginBottom: 8,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <FunctionOutlined />
-                  <Text type='secondary'>{subTopic.lessons} modules</Text>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <ClockCircleOutlined />
-                  <Text type='secondary'>{subTopic.duration}</Text>
-                </div>
-              </div>
-              <div
-                style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  marginBottom: 16,
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <UserOutlined />
-                  <Text type='secondary'>{subTopic.difficulty}</Text>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <HistoryOutlined />
-                  <Text type='secondary'>{subTopic.progress}% complete</Text>
-                </div>
+                <Text strong>Overall Progress</Text>
+                <Text strong>{Math.round(totalProgress)}%</Text>
               </div>
               <Progress
-                percent={subTopic.progress}
+                percent={Math.round(totalProgress)}
                 showInfo={false}
                 strokeColor={topic.color}
+                strokeWidth={10}
+                style={{ marginBottom: 16 }}
               />
-            </SubTopicCard>
+              <Button
+                type='primary'
+                icon={<RocketOutlined />}
+                style={{ background: topic.color, borderColor: topic.color }}
+                onClick={() => {
+                  // Find the first subtopic with progress < 100%
+                  const nextSubtopic =
+                    topic.subTopics.find((s: any) => s.progress < 100) ||
+                    topic.subTopics[0];
+                  handleSubTopicClick(nextSubtopic.id);
+                }}
+              >
+                Continue Learning
+              </Button>
+            </div>
           </Col>
-        ))}
+        </Row>
+      </TopicHeader>
+
+      <Row gutter={[24, 24]} style={{ marginBottom: 40 }}>
+        <Col xs={24} md={8}>
+          <StatCard $color={topic.color}>
+            <div className='icon-wrapper'>
+              <ClockCircleOutlined />
+            </div>
+            <Title level={4}>Duration</Title>
+            <Paragraph style={{ fontSize: 16 }}>
+              Complete this topic in approximately{' '}
+              <strong>{topic.estimatedDuration}</strong>, learning at your own
+              pace.
+            </Paragraph>
+          </StatCard>
+        </Col>
+        <Col xs={24} md={8}>
+          <StatCard $color={topic.color}>
+            <div className='icon-wrapper'>
+              <BookOutlined />
+            </div>
+            <Title level={4}>Modules</Title>
+            <Paragraph style={{ fontSize: 16 }}>
+              Master <strong>{topic.totalLessons} modules</strong> with
+              exercises, lessons, and assessments.
+            </Paragraph>
+          </StatCard>
+        </Col>
+        <Col xs={24} md={8}>
+          <StatCard $color={topic.color}>
+            <div className='icon-wrapper'>
+              <TrophyOutlined />
+            </div>
+            <Title level={4}>Achievement</Title>
+            <Paragraph style={{ fontSize: 16 }}>
+              Completion of this topic will earn you the{' '}
+              <strong>{topic.name} Master</strong> badge.
+            </Paragraph>
+          </StatCard>
+        </Col>
       </Row>
+
+      {/* <HistorySectionCard>
+        <Title level={4} style={{ marginBottom: 24 }}>
+          <Space>
+            <HistoryOutlined style={{ color: topic.color }} />
+            <span>Historical Context</span>
+          </Space>
+        </Title>
+
+        <Row gutter={[32, 32]} justify='space-around'>
+          {topic.historicalFigures.map((figure: any, index: number) => (
+            <Col key={index} xs={24} sm={8}>
+              <div style={{ textAlign: 'center' }}>
+                <CircleAvatar
+                  size={80}
+                  src={figure.image || '/placeholder.svg'}
+                />
+                <Title level={5} style={{ marginBottom: 4, marginTop: 8 }}>
+                  {figure.name}
+                </Title>
+                <div
+                  style={{ color: '#1890ff', fontWeight: 500, marginBottom: 4 }}
+                >
+                  {figure.title}
+                </div>
+                <Text type='secondary'>{figure.years}</Text>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </HistorySectionCard> */}
+
+      <div style={{ marginBottom: 24 }}>
+        <Space align='center' style={{ marginBottom: 16 }}>
+          <Title level={3} style={{ margin: 0 }}>
+            Learning Path
+          </Title>
+          <Text type='secondary'>
+            Follow the sequence below for optimal learning
+          </Text>
+        </Space>
+
+        <Divider style={{ margin: '16px 0 32px' }} />
+
+        {topic.subTopics.map((subTopic: any, index: number) => (
+          <SubTopicCard
+            key={subTopic.id}
+            onClick={() => handleSubTopicClick(subTopic.id)}
+            $color={topic.color}
+            $progress={subTopic.progress}
+            style={{ marginBottom: 24 }}
+          >
+            <Row gutter={24} align='middle'>
+              <Col xs={24} sm={4} style={{ textAlign: 'center' }}>
+                <div
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: '50%',
+                    background: `${topic.color}15`,
+                    color: topic.color,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 24,
+                    margin: '0 auto',
+                  }}
+                >
+                  {index + 1}
+                </div>
+              </Col>
+
+              <Col xs={24} sm={16}>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginBottom: 8,
+                    }}
+                  >
+                    <Title level={4} style={{ margin: 0 }}>
+                      {subTopic.name}
+                    </Title>
+                    {subTopic.progress === 100 && (
+                      <Tag
+                        color='success'
+                        icon={<CheckCircleOutlined />}
+                        style={{ marginLeft: 8 }}
+                      >
+                        Completed
+                      </Tag>
+                    )}
+                  </div>
+
+                  <Paragraph style={{ marginBottom: 16, fontSize: 15 }}>
+                    {subTopic.description}
+                  </Paragraph>
+
+                  <Space wrap>
+                    <DifficultyTag
+                      $difficulty={subTopic.difficulty}
+                      icon={<UserOutlined />}
+                    >
+                      {subTopic.difficulty}
+                    </DifficultyTag>
+
+                    <Tag icon={<BookOutlined />} color='blue'>
+                      {subTopic.lessons} modules
+                    </Tag>
+
+                    <Tag icon={<ClockCircleOutlined />} color='purple'>
+                      {subTopic.duration}
+                    </Tag>
+
+                    <ProgressTag
+                      $progress={subTopic.progress}
+                      icon={<LineChartOutlined />}
+                    >
+                      {subTopic.progress}% complete
+                    </ProgressTag>
+                  </Space>
+                </div>
+              </Col>
+
+              <Col xs={24} sm={4} style={{ textAlign: 'right' }}>
+                <Button
+                  type='primary'
+                  shape='circle'
+                  icon={<ArrowRightOutlined />}
+                  size='large'
+                  style={{ background: topic.color, borderColor: topic.color }}
+                />
+              </Col>
+
+              <Col span={24}>
+                <div className='progress-indicator'>
+                  <div className='progress-bar'></div>
+                </div>
+              </Col>
+            </Row>
+          </SubTopicCard>
+        ))}
+      </div>
     </div>
   );
 };

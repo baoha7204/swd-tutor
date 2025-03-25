@@ -220,7 +220,7 @@ const TopicsPage: React.FC = () => {
       description: 'Learn about equations, functions, and algebraic structures',
       icon: <FunctionOutlined />,
       color: '#4361ee',
-      progress: 75,
+      progress: 44,
       lessons: 24,
       estimatedTime: '12 weeks',
       difficulty: 'Intermediate',
@@ -238,7 +238,7 @@ const TopicsPage: React.FC = () => {
         'Explore shapes, sizes, positions, and dimensions of objects',
       icon: <BorderOutlined />,
       color: '#7209b7',
-      progress: 45,
+      progress: 43,
       lessons: 20,
       estimatedTime: '10 weeks',
       difficulty: 'Beginner to Intermediate',
@@ -255,7 +255,7 @@ const TopicsPage: React.FC = () => {
       description: 'Study limits, continuity, differentiation, and integration',
       icon: <LineChartOutlined />,
       color: '#f72585',
-      progress: 25,
+      progress: 28,
       lessons: 28,
       estimatedTime: '14 weeks',
       difficulty: 'Advanced',
@@ -273,7 +273,7 @@ const TopicsPage: React.FC = () => {
         'Understand randomness, uncertainty, and statistical inference',
       icon: <PercentageOutlined />,
       color: '#4cc9f0',
-      progress: 10,
+      progress: 12,
       lessons: 18,
       estimatedTime: '9 weeks',
       difficulty: 'Intermediate',
@@ -367,7 +367,7 @@ const TopicsPage: React.FC = () => {
     totalExercises: 115,
     completedExercises: 36,
     accuracy: 82,
-    streakDays: 7,
+    streakDays: 12,
   };
 
   return (
@@ -404,6 +404,9 @@ const TopicsPage: React.FC = () => {
               value={topics.length}
               prefix={<BookOutlined />}
               valueStyle={{ color: '#1890ff' }}
+              style={{
+                minWidth: 110,
+              }}
             />
           </StatBox>
           <StatBox>
@@ -413,6 +416,9 @@ const TopicsPage: React.FC = () => {
               suffix={`/ ${userStats.totalExercises}`}
               prefix={<RocketOutlined />}
               valueStyle={{ color: '#52c41a' }}
+              style={{
+                minWidth: 110,
+              }}
             />
           </StatBox>
           <StatBox>
@@ -422,6 +428,9 @@ const TopicsPage: React.FC = () => {
               suffix='%'
               prefix={<TrophyOutlined />}
               valueStyle={{ color: '#fa8c16' }}
+              style={{
+                minWidth: 110,
+              }}
             />
           </StatBox>
           <StatBox>
@@ -430,6 +439,9 @@ const TopicsPage: React.FC = () => {
               value={userStats.streakDays}
               prefix={<FireOutlined />}
               valueStyle={{ color: '#eb2f96' }}
+              style={{
+                minWidth: 110,
+              }}
             />
           </StatBox>
         </HeroStats>

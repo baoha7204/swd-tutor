@@ -14,6 +14,9 @@ import {
   Tooltip,
   Badge,
   Tag,
+  Row,
+  Col,
+  Steps,
 } from 'antd';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -26,62 +29,381 @@ import {
   LeftOutlined,
   HomeOutlined,
   ThunderboltOutlined,
+  RocketOutlined,
+  TrophyOutlined,
+  BookOutlined,
+  FireOutlined,
+  StarOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
+const { Step } = Steps;
+
+const PageContainer = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 24px;
+  background-color: #f9fafc;
+  min-height: 100vh;
+  position: relative;
+
+  &::before {
+    content: '';
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(
+      135deg,
+      rgba(67, 97, 238, 0.08),
+      rgba(114, 9, 183, 0.05)
+    );
+    z-index: 0;
+    border-bottom: 1px solid rgba(67, 97, 238, 0.07);
+  }
+`;
+
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
 
 const StyledCard = styled(Card)`
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   margin-bottom: 24px;
+  border: none;
   overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+  }
 `;
 
 const HintCard = styled(Card)`
-  border-radius: 8px;
-  background-color: #e6f7ff;
-  border: 1px solid #91d5ff;
-  margin: 16px 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f5ff, #e6f7ff);
+  border: 1px solid #bae7ff;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+
+  .ant-card-body {
+    padding: 16px 20px;
+  }
 `;
 
 const SkillAnalysisCard = styled(Card)`
-  border-radius: 8px;
-  margin-top: 24px;
+  border-radius: 12px;
+  margin-top: 28px;
+  border: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+
+  .ant-card-head {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 20px;
+  }
+
+  .ant-card-body {
+    padding: 20px;
+  }
 `;
 
 const StrengthItem = styled.div`
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(82, 196, 26, 0.15);
+  }
 
   .icon {
     color: #52c41a;
+    font-size: 16px;
+    margin-top: 2px;
   }
 `;
 
 const WeaknessItem = styled.div`
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #fff2e8;
+  border: 1px solid #ffccc7;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(245, 34, 45, 0.15);
+  }
 
   .icon {
     color: #f5222d;
+    font-size: 16px;
+    margin-top: 2px;
   }
 `;
 
 const EquationCard = styled.div`
-  font-size: 1.4rem;
-  margin: 24px 0;
-  padding: 24px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
+  font-size: 1.6rem;
+  margin: 28px 0;
+  padding: 30px;
+  background: linear-gradient(135deg, #f0f5ff, #fafafa);
+  border-radius: 14px;
   text-align: center;
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 16px rgba(67, 97, 238, 0.08);
   font-family: 'Courier New', monospace;
   font-weight: 600;
   color: #333;
+  border: 1px solid rgba(67, 97, 238, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(67, 97, 238, 0.05) 0%,
+      transparent 70%
+    );
+    top: -100px;
+    right: -100px;
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(
+      circle,
+      rgba(114, 9, 183, 0.05) 0%,
+      transparent 70%
+    );
+    bottom: -75px;
+    left: -75px;
+    border-radius: 50%;
+  }
+`;
+
+const AnswerOption = styled(Radio.Button)<{
+  $isSelected: boolean;
+  $isAnswered: boolean;
+  $isCorrect?: boolean;
+}>`
+  width: 100%;
+  height: auto;
+  border-radius: 8px !important;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+  display: block;
+  text-align: left;
+  border: 1px solid transparent;
+
+  /* Clean background colors */
+  background-color: ${(props) =>
+    props.$isAnswered
+      ? props.$isCorrect
+        ? '#f6ffed'
+        : props.$isSelected
+        ? '#fff1f0'
+        : '#ffffff'
+      : props.$isSelected
+      ? '#e6f7ff'
+      : '#ffffff'};
+
+  /* Border colors */
+  border-color: ${(props) =>
+    props.$isAnswered
+      ? props.$isCorrect
+        ? '#52c41a'
+        : props.$isSelected
+        ? '#ff4d4f'
+        : '#d9d9d9'
+      : props.$isSelected
+      ? '#1890ff'
+      : '#d9d9d9'};
+
+  /* Box shadow for better dimension */
+  box-shadow: ${(props) =>
+    props.$isSelected ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none'};
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: ${(props) =>
+      props.$isAnswered
+        ? props.$isCorrect
+          ? '#52c41a'
+          : props.$isSelected
+          ? '#ff4d4f'
+          : '#d9d9d9'
+        : '#1890ff'};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  &.ant-radio-button-wrapper-checked {
+    color: ${(props) =>
+      props.$isAnswered
+        ? props.$isCorrect
+          ? '#52c41a'
+          : '#ff4d4f'
+        : '#1890ff'};
+    background-color: ${(props) =>
+      props.$isAnswered
+        ? props.$isCorrect
+          ? '#d3f5c2'
+          : '#f8cdce'
+        : '#d0e7fd'};
+    font-weight: 500;
+  }
+
+  .option-content {
+    position: relative;
+  }
+`;
+
+const ProgressWrapper = styled.div`
+  margin-bottom: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+`;
+
+const ProgressBar = styled(Progress)`
+  margin-bottom: 16px;
+
+  .ant-progress-inner {
+    border-radius: 8px;
+    height: 12px;
+    overflow: hidden;
+  }
+
+  .ant-progress-bg {
+    border-radius: 8px;
+    height: 12px !important;
+  }
+`;
+
+const QuestionNavigator = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const NavigatorButton = styled(Button)<{ $status?: string }>`
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4px;
+  box-shadow: ${(props) =>
+    props.$status ? '0 2px 6px rgba(0, 0, 0, 0.1)' : 'none'};
+  background-color: ${(props) => {
+    switch (props.$status) {
+      case 'correct':
+        return '#f6ffed';
+      case 'incorrect':
+        return '#fff1f0';
+      default:
+        return props.type === 'primary' ? undefined : 'white';
+    }
+  }};
+  color: ${(props) => {
+    switch (props.$status) {
+      case 'correct':
+        return 'black';
+      case 'incorrect':
+        return 'black';
+      default:
+        return props.type === 'primary' ? undefined : 'black';
+    }
+  }};
+  border-color: ${(props) => {
+    switch (props.$status) {
+      case 'correct':
+        return '#52c41a';
+      case 'incorrect':
+        return '#f5222d';
+      default:
+        return props.type === 'primary' ? undefined : '#d9d9d9';
+    }
+  }};
+
+  &:hover {
+    transform: scale(1.1);
+    z-index: 1;
+  }
+`;
+
+const ActionButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  align-items: center;
+`;
+
+const PrimaryButton = styled(Button)`
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 24px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const QuestionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+`;
+
+const QuestionIcon = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4361ee, #3a56d4);
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
 `;
 
 const ExercisePage: React.FC = () => {
@@ -502,61 +824,102 @@ const ExercisePage: React.FC = () => {
     (completedQuestionsCount / totalQuestionsCount) * 100
   );
 
+  // Get question status for the navigator
+  const getQuestionStatus = (index: number) => {
+    const exercise = exercises[index];
+    if (!exercise) return undefined;
+
+    const result = results.find((r) => r.id === exercise.id);
+    if (!result) return undefined;
+
+    return result.isCorrect ? 'correct' : 'incorrect';
+  };
+
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '24px 0' }}>
-      {contextHolder} {/* For message notifications */}
-      <div style={{ marginBottom: 36 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'start',
-            marginBottom: 16,
-          }}
-        >
-          <Button
-            type='text'
-            icon={<HomeOutlined />}
-            onClick={() =>
-              navigate(`/topics/${topicId}/subtopics/${subtopicId}`)
-            }
-            style={{
-              padding: 0,
-            }}
-          >
-            Module Home
-          </Button>
-        </div>
+    <PageContainer>
+      <ContentWrapper>
+        {contextHolder} {/* For message notifications */}
+        {/* Progress and navigation header */}
+        <ProgressWrapper>
+          <Row gutter={[24, 16]} align='middle'>
+            <Col xs={24} md={16}>
+              <div style={{ marginBottom: 12 }}>
+                <Space align='center'>
+                  <Button
+                    type='link'
+                    icon={<ArrowLeftOutlined />}
+                    onClick={() =>
+                      navigate(`/topics/${topicId}/subtopics/${subtopicId}`)
+                    }
+                    style={{ paddingLeft: 0 }}
+                  >
+                    Back to Module
+                  </Button>
+                  <Divider type='vertical' />
+                  <Text strong>Exercise: First Degree Equations</Text>
+                </Space>
+              </div>
 
-        <Progress
-          percent={progressPercentage}
-          style={{ marginBottom: 8 }}
-          strokeColor={{
-            '0%': '#108ee9',
-            '100%': '#87d068',
-          }}
-        />
+              <ProgressBar
+                percent={progressPercentage}
+                strokeColor={{
+                  '0%': '#4361ee',
+                  '100%': '#3a56d4',
+                }}
+                showInfo={false}
+              />
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Text type='secondary'>
-            Question {currentExerciseIndex + 1} of {exercises.length}
-          </Text>
-          {/* <Text type='secondary'>
-            {completedQuestionsCount} of {totalQuestionsCount} completed (
-            {progressPercentage}%)
-          </Text> */}
-        </div>
-      </div>
-      <StyledCard>
-        <div style={{ padding: '0 8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <ThunderboltOutlined style={{ color: '#722ed1' }} />
-            <Title level={4} style={{ margin: 0 }}>
-              First degree equation
-            </Title>
-          </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Space>
+                  {/* <Tag color='#4361ee' style={{ borderRadius: '4px' }}>
+                    {completedQuestionsCount}/{totalQuestionsCount} Completed
+                  </Tag> */}
+                  <Text type='secondary'>
+                    Question {currentExerciseIndex + 1} of {exercises.length}
+                  </Text>
+                </Space>
 
-          <div style={{ marginTop: 24 }}>
-            <Title level={5} style={{ fontSize: '18px' }}>
+                {totalTime > 0 && (
+                  <Tag icon={<ClockCircleOutlined />} color='blue'>
+                    {Math.floor(totalTime / 60000)}m{' '}
+                    {Math.floor((totalTime % 60000) / 1000)}s
+                  </Tag>
+                )}
+              </div>
+            </Col>
+
+            {/* <Col xs={24} md={8} style={{ textAlign: 'right' }}>
+              <Steps
+                progressDot
+                current={currentExerciseIndex}
+                size='small'
+                style={{ maxWidth: 180, margin: '0 auto' }}
+              >
+                {exercises.map((_, index) => (
+                  <Step key={index} />
+                ))}
+              </Steps>
+            </Col> */}
+          </Row>
+        </ProgressWrapper>
+        {/* Main question card */}
+        <StyledCard bodyStyle={{ padding: '24px' }}>
+          <QuestionHeader>
+            <QuestionIcon>
+              <ThunderboltOutlined />
+            </QuestionIcon>
+            <div>
+              <Title level={4} style={{ margin: 0, fontSize: '18px' }}>
+                First degree equation
+              </Title>
+              <Text type='secondary'>
+                Solve the equation and select the correct answer
+              </Text>
+            </div>
+          </QuestionHeader>
+
+          <div>
+            <Title level={5} style={{ fontSize: '18px', marginBottom: '16px' }}>
               {currentExercise.question}
             </Title>
 
@@ -574,84 +937,55 @@ const ExercisePage: React.FC = () => {
                     option.value === currentExercise.correctAnswer;
                   const isSelectedAnswer = option.value === currentAnswer;
 
-                  const cardStyle: React.CSSProperties = {
-                    width: '100%',
-                    cursor: isAnswered ? 'default' : 'pointer',
-                    borderRadius: '8px',
-                    marginBottom: '12px',
-                    transition: 'all 0.3s ease',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  };
-
-                  // Only highlight selected answer before submission, without indicating correct/incorrect
-                  let borderStyle = '1px solid #d9d9d9';
-                  let backgroundColor = 'white';
-
-                  if (!isAnswered && isSelectedAnswer) {
-                    // When selected but not yet submitted
-                    borderStyle = '1px solid #1890ff';
-                    backgroundColor = '#f0f5ff';
-                  } else if (isAnswered) {
-                    // After submission - show correct/incorrect styling
-                    if (isCorrectAnswer) {
-                      backgroundColor = '#f6ffed';
-                      borderStyle = '1px solid #52c41a';
-                    } else if (isSelectedAnswer) {
-                      backgroundColor = '#fff1f0';
-                      borderStyle = '1px solid #f5222d';
-                    }
-                  }
-
                   return (
-                    <Radio.Button
+                    <AnswerOption
                       key={option.value}
                       value={option.value}
-                      style={{
-                        ...cardStyle,
-                        border: borderStyle,
-                        backgroundColor: backgroundColor,
-                      }}
+                      $isSelected={isSelectedAnswer}
+                      $isAnswered={isAnswered}
+                      $isCorrect={isCorrectAnswer}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Space>
-                          <Text
-                            strong={isSelectedAnswer}
-                            style={{
-                              fontSize: '16px',
-                              // Only change text color after submission
-                              color: isAnswered
-                                ? isCorrectAnswer
-                                  ? '#52c41a'
-                                  : isSelectedAnswer
-                                  ? '#f5222d'
-                                  : 'inherit'
-                                : 'inherit',
-                            }}
-                          >
-                            {option.label}
-                          </Text>
-                        </Space>
+                      <div className='option-content'>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Space>
+                            <Text
+                              strong={isSelectedAnswer}
+                              style={{
+                                fontSize: '16px',
+                                color: isAnswered
+                                  ? isCorrectAnswer
+                                    ? '#52c41a'
+                                    : isSelectedAnswer
+                                    ? '#f5222d'
+                                    : 'inherit'
+                                  : 'inherit',
+                              }}
+                            >
+                              {option.label}
+                            </Text>
+                          </Space>
 
-                        {/* Only show check/close icons after submission */}
-                        {isAnswered && isCorrectAnswer && (
-                          <CheckCircleFilled
-                            style={{ color: '#52c41a', fontSize: '18px' }}
-                          />
-                        )}
-                        {isAnswered && isSelectedAnswer && !isCorrectAnswer && (
-                          <CloseCircleFilled
-                            style={{ color: '#f5222d', fontSize: '18px' }}
-                          />
-                        )}
+                          {isAnswered && isCorrectAnswer && (
+                            <CheckCircleFilled
+                              style={{ color: '#52c41a', fontSize: '18px' }}
+                            />
+                          )}
+                          {isAnswered &&
+                            isSelectedAnswer &&
+                            !isCorrectAnswer && (
+                              <CloseCircleFilled
+                                style={{ color: '#f5222d', fontSize: '18px' }}
+                              />
+                            )}
+                        </div>
                       </div>
-                    </Radio.Button>
+                    </AnswerOption>
                   );
                 })}
               </Space>
@@ -663,48 +997,73 @@ const ExercisePage: React.FC = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 8,
-                    marginBottom: 12,
+                    gap: 12,
+                    marginBottom: 16,
                   }}
                 >
-                  <Button onClick={() => setShowHint(false)} type='link'>
-                    <img
-                      src='\Frame.png'
-                      style={{ color: '#1890ff', fontSize: '18px' }}
-                    />
-                    <Text strong style={{ fontSize: '16px' }}>
+                  <BulbOutlined
+                    style={{ color: '#1890ff', fontSize: '20px' }}
+                  />
+                  <div>
+                    <Text strong style={{ fontSize: '16px', display: 'block' }}>
                       Suggestion from {currentExercise.hint.from}
                     </Text>
-                  </Button>
+                    <Text type='secondary' style={{ fontSize: '13px' }}>
+                      Here's how to approach this problem
+                    </Text>
+                  </div>
+                  <Button
+                    type='text'
+                    icon={<CloseCircleFilled />}
+                    style={{ marginLeft: 'auto' }}
+                    onClick={() => setShowHint(false)}
+                  />
                 </div>
-                <Text style={{ fontSize: '15px' }}>
+
+                <Paragraph style={{ fontSize: '15px', marginBottom: '16px' }}>
                   {currentExercise.hint.text}
-                </Text>
-                <ul style={{ marginTop: 12, paddingLeft: 24 }}>
+                </Paragraph>
+
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.5)',
+                    borderRadius: '8px',
+                    padding: '12px 16px',
+                  }}
+                >
                   {currentExercise.hint.steps.map((step, index) => (
-                    <li key={index} style={{ marginBottom: '8px' }}>
-                      {step}
-                    </li>
+                    <div
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '10px',
+                        marginBottom:
+                          index < currentExercise.hint.steps.length - 1
+                            ? '12px'
+                            : 0,
+                      }}
+                    >
+                      <Badge
+                        count={index + 1}
+                        style={{
+                          backgroundColor: '#1890ff',
+                          marginTop: '2px',
+                        }}
+                      />
+                      <Text style={{ lineHeight: '1.6' }}>{step}</Text>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </HintCard>
             )}
 
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: 24,
-              }}
-            >
+            <ActionButtonWrapper>
               {!showHint && !isAnswered && (
                 <Button
-                  type='link'
+                  type='default'
                   onClick={() => setShowHint(true)}
                   icon={<BulbOutlined />}
-                  style={{
-                    padding: 0,
-                  }}
                 >
                   Show Hint
                 </Button>
@@ -712,186 +1071,172 @@ const ExercisePage: React.FC = () => {
               {(showHint || isAnswered) && <div />}
 
               {!isAnswered ? (
-                <Button
+                <PrimaryButton
                   type='primary'
                   onClick={handleSubmit}
                   disabled={!currentAnswer}
-                  style={{ fontWeight: 600 }}
+                  size='large'
                 >
                   Check Answer
-                </Button>
+                </PrimaryButton>
               ) : (
-                <Button
-                  type='primary'
-                  onClick={handleNext}
-                  style={{ fontWeight: 600 }}
-                >
+                <PrimaryButton type='primary' onClick={handleNext} size='large'>
                   {currentExerciseIndex < exercises.length - 1
                     ? 'Next Question'
                     : 'See Results'}
-                </Button>
+                </PrimaryButton>
               )}
-            </div>
+            </ActionButtonWrapper>
           </div>
-        </div>
-      </StyledCard>
-      {isAnswered && (
-        <SkillAnalysisCard title='Skill analysis:'>
-          <div style={{ display: 'flex', gap: 24 }}>
-            <div style={{ flex: 1 }}>
-              <Title level={5} style={{ color: '#52c41a' }}>
-                Strengths
-              </Title>
-              {currentExercise.skillAnalysis?.strengths.map(
-                (strength, index) => (
-                  <StrengthItem key={index}>
-                    <CheckCircleFilled className='icon' />
-                    <Text>{strength}</Text>
-                  </StrengthItem>
-                )
-              )}
-            </div>
-            <Divider type='vertical' style={{ height: 'auto' }} />
-            <div style={{ flex: 1 }}>
-              <Title level={5} style={{ color: '#f5222d' }}>
-                Needs improvement
-              </Title>
-              {currentExercise.skillAnalysis?.weaknesses.map(
-                (weakness, index) => (
-                  <WeaknessItem key={index}>
-                    <CloseCircleFilled className='icon' />
-                    <Text>{weakness}</Text>
-                  </WeaknessItem>
-                )
-              )}
-            </div>
-          </div>
-        </SkillAnalysisCard>
-      )}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: 24,
-        }}
-      >
-        {/* <Button
-          icon={<LeftOutlined />}
-          onClick={handlePrevious}
-          style={{ display: 'flex', alignItems: 'center' }}
-        >
-          Previous
-        </Button> */}
+        </StyledCard>
+        {/* Skill analysis section - only shown after answering */}
+        {isAnswered && (
+          <SkillAnalysisCard
+            title={
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+              >
+                <RocketOutlined style={{ color: '#722ed1' }} />
+                <span>Skill Analysis</span>
+              </div>
+            }
+          >
+            <Row gutter={[32, 24]}>
+              <Col xs={24} md={12}>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <TrophyOutlined style={{ color: '#52c41a' }} />
+                    <Title level={5} style={{ margin: 0, color: '#52c41a' }}>
+                      Strengths
+                    </Title>
+                  </div>
 
-        <div style={{ textAlign: 'center' }}>
+                  {currentExercise.skillAnalysis?.strengths.map(
+                    (strength, index) => (
+                      <StrengthItem key={index}>
+                        <CheckCircleFilled className='icon' />
+                        <Text>{strength}</Text>
+                      </StrengthItem>
+                    )
+                  )}
+                </div>
+              </Col>
+
+              <Col xs={24} md={12}>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <FireOutlined style={{ color: '#f5222d' }} />
+                    <Title level={5} style={{ margin: 0, color: '#f5222d' }}>
+                      Areas for Improvement
+                    </Title>
+                  </div>
+
+                  {currentExercise.skillAnalysis?.weaknesses.map(
+                    (weakness, index) => (
+                      <WeaknessItem key={index}>
+                        <CloseCircleFilled className='icon' />
+                        <Text>{weakness}</Text>
+                      </WeaknessItem>
+                    )
+                  )}
+                </div>
+              </Col>
+            </Row>
+
+            {/* Recommendation section */}
+            <div
+              style={{
+                marginTop: '24px',
+                padding: '16px',
+                background: 'linear-gradient(135deg, #f9f0ff 0%, #efdbff 100%)',
+                borderRadius: '8px',
+              }}
+            >
+              <Space align='start'>
+                <StarOutlined
+                  style={{
+                    color: '#722ed1',
+                    fontSize: '18px',
+                    marginTop: '3px',
+                  }}
+                />
+                <div>
+                  <Text strong style={{ color: '#722ed1' }}>
+                    Recommendation
+                  </Text>
+                  <Paragraph style={{ margin: '4px 0 0' }}>
+                    Based on your performance, we suggest focusing on practicing
+                    more{' '}
+                    {isAnswered &&
+                      currentExercise.skillAnalysis?.weaknesses[0].toLowerCase()}{' '}
+                    problems.
+                  </Paragraph>
+                </div>
+              </Space>
+            </div>
+          </SkillAnalysisCard>
+        )}
+        {/* Question navigator */}
+        <QuestionNavigator>
           {exercises.map((_, index) => {
-            const hasResult = results.some(
-              (r) => r.id === exercises[index]?.id
-            );
-            const isCorrect = results.find(
-              (r) => r.id === exercises[index]?.id
-            )?.isCorrect;
+            const status = getQuestionStatus(index);
 
             return (
-              <Button
+              <NavigatorButton
                 key={index}
-                type={index === currentExerciseIndex ? 'primary' : 'text'}
+                type={index === currentExerciseIndex ? 'primary' : 'default'}
                 shape='circle'
-                size='small'
-                style={{
-                  margin: '0 4px',
-                  // Only show styling for questions that have been answered (have results)
-                  backgroundColor: hasResult
-                    ? isCorrect
-                      ? '#f6ffed'
-                      : '#fff1f0'
-                    : index === currentExerciseIndex
-                    ? undefined
-                    : 'transparent',
-                  borderColor: hasResult
-                    ? isCorrect
-                      ? '#52c41a'
-                      : '#f5222d'
-                    : undefined,
-                  color: hasResult
-                    ? isCorrect
-                      ? 'black'
-                      : 'black'
-                    : undefined,
-                }}
+                $status={status}
                 onClick={() => setCurrentExerciseIndex(index)}
               >
                 {index + 1}
-              </Button>
+              </NavigatorButton>
             );
           })}
-        </div>
+        </QuestionNavigator>
+        {/* Bottom navigation controls */}
+        {/* <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '32px',
+            borderTop: '1px solid #f0f0f0',
+            paddingTop: '20px',
+          }}
+        >
+          <Button icon={<LeftOutlined />} onClick={handlePrevious}>
+            Previous
+          </Button>
 
-        {/* <Button
-          type={isAnswered ? 'primary' : 'default'}
-          icon={<RightOutlined />}
-          onClick={handleNext}
-          disabled={!isAnswered}
-          style={{ display: 'flex', alignItems: 'center' }}
-        ></Button>
-          {currentExerciseIndex < exercises.length - 1 ? 'Next' : 'Finish'}
-        </Button> */}
-      </div>
-      {/* Question navigation at the bottom */}
-      {/* <div style={{ textAlign: 'center', marginTop: 24 }}>
-        <Space wrap>
-          {exercises.map((exercise, index) => {
-            const hasResult = results.some((r) => r.id === exercise.id);
-            const isCorrect = results.find(
-              (r) => r.id === exercise.id
-            )?.isCorrect;
-
-            return (
-              <Button
-                key={index}
-                type={index === currentExerciseIndex ? 'primary' : 'text'}
-                shape='circle'
-                size='small'
-                style={{
-                  margin: '0 4px',
-                  backgroundColor: hasResult
-                    ? isCorrect
-                      ? '#f6ffed'
-                      : '#fff1f0'
-                    : index === currentExerciseIndex
-                    ? undefined
-                    : 'transparent',
-                  borderColor: hasResult
-                    ? isCorrect
-                      ? '#52c41a'
-                      : '#f5222d'
-                    : undefined,
-                  color: 'black',
-                }}
-                onClick={() => setCurrentExerciseIndex(index)}
-              >
-                {index + 1}
-              </Button>
-            );
-          })}
-        </Space> */}
-      {/* Add status indicator for completed questions
-        <div style={{ marginTop: 8 }}>
-          <Text type='secondary'>
-            {results.length} of {exercises.length} questions answered
-          </Text>
-          {results.length === exercises.length ? (
-            <Tag color='success' style={{ marginLeft: 8 }}>
-              All Complete
-            </Tag>
-          ) : (
-            <Tag color='warning' style={{ marginLeft: 8 }}>
-              {exercises.length - results.length} Remaining
-            </Tag>
-          )}
+          <Button
+            type='primary'
+            disabled={
+              !isAnswered && currentExerciseIndex === exercises.length - 1
+            }
+            onClick={handleNext}
+          >
+            {currentExerciseIndex < exercises.length - 1
+              ? 'Next'
+              : 'See Results'}
+            <RightOutlined />
+          </Button>
         </div> */}
-      {/* </div> */}
-    </div>
+      </ContentWrapper>
+    </PageContainer>
   );
 };
 

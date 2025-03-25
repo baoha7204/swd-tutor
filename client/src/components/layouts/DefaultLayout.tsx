@@ -3,7 +3,15 @@
 import type React from 'react';
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
-import { Layout as AntLayout, Avatar, Badge, Button, Dropdown } from 'antd';
+import {
+  Layout as AntLayout,
+  Avatar,
+  Badge,
+  Button,
+  Dropdown,
+  Tooltip,
+  Progress,
+} from 'antd';
 import {
   BellOutlined,
   TrophyOutlined,
@@ -11,6 +19,8 @@ import {
   SettingOutlined,
   LogoutOutlined,
   MenuOutlined,
+  RobotOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
 import styled from 'styled-components';
 import Logo from '../logo/index';
@@ -80,6 +90,70 @@ const MobileMenuButton = styled(Button)`
 
   @media (max-width: 768px) {
     display: block;
+  }
+`;
+
+const AIChatButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4361ee, #3a0ca3);
+  border: none;
+  border-radius: 12px;
+  height: 36px;
+  padding: 0 16px;
+  color: white;
+  margin-right: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(67, 97, 238, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+    background: linear-gradient(135deg, #3a56e7, #2b0a7a);
+    color: white;
+  }
+
+  .icon {
+    font-size: 16px;
+  }
+
+  @media (max-width: 576px) {
+    .text {
+      display: none;
+    }
+    padding: 0 12px;
+  }
+`;
+
+const XPContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* background-color: #f6ffed; */
+  padding: 4px 12px;
+  /* border: 1px solid #b7eb8f; */
+  margin-right: 5px;
+
+  .xp-icon {
+    color: #8a30f9;
+    font-size: 16px;
+  }
+
+  .xp-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #8a30f9;
+  }
+
+  .xp-progress {
+    width: 60px;
+  }
+`;
+
+const StyledBadge = styled(Badge)`
+  .ant-badge-count {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -155,32 +229,68 @@ const DefaultLayout: React.FC = () => {
             onClick={() => setMobileMenuVisible(!mobileMenuVisible)}
           />
 
+          {/* AI Chat Button */}
+          <Tooltip title='Ask AI tutor for help'>
+            <Button
+              onClick={() => navigate('/ai-chat')}
+              style={{
+                padding: 0,
+                border: 'none',
+              }}
+            >
+              <img src='/AI.png' alt='AI Tutor' style={{ height: 36 }} />
+            </Button>
+          </Tooltip>
+
+          {/* XP Indicator */}
+          <Tooltip title='Your experience points - Level 4'>
+            <XPContainer>
+              <ThunderboltOutlined className='xp-icon' />
+              <span className='xp-text'>120 XP</span>
+              <Progress
+                className='xp-progress'
+                percent={68}
+                size='small'
+                showInfo={false}
+                strokeColor='#8a30f9'
+                trailColor='#e6f7ff'
+              />
+            </XPContainer>
+          </Tooltip>
+
           {/* {currentUser && ( */}
           <>
-            <Badge count={5} size='small'>
-              <Button
-                type='text'
-                icon={<BellOutlined />}
-                size='small'
-                shape='circle'
-              />
-            </Badge>
+            <Tooltip title='127 day streak! Keep it up!'>
+              <Badge
+                count={
+                  <img src='/fire.png' alt='Fire' style={{ height: 16 }} />
+                }
+                offset={[-57, 8]}
+              >
+                <span style={{ fontWeight: 600 }}>12 days</span>
+              </Badge>
+            </Tooltip>
 
-            <Badge
-              count={<TrophyOutlined style={{ color: '#faad14' }} />}
-              offset={[-2, 4]}
-            >
-              <Button type='text' size='small'>
-                127 days
-              </Button>
-            </Badge>
             <Dropdown menu={{ items: userMenuItems }} placement='bottomRight'>
               <Avatar
                 src='/avatar.png'
                 size='default'
-                style={{ cursor: 'pointer' }}
+                style={{
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                }}
               />
             </Dropdown>
+
+            <StyledBadge count={5} size='small' offset={[0, 3]}>
+              <Button
+                type='text'
+                icon={<BellOutlined />}
+                size='middle'
+                shape='circle'
+                style={{ backgroundColor: '#f5f5f5' }}
+              />
+            </StyledBadge>
           </>
           {/* )} */}
 

@@ -220,6 +220,39 @@ const RecommendCard = styled(StyledCard)`
   }
 `;
 
+const StyledBanner = styled.div`
+  background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 30%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+`;
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
@@ -446,84 +479,83 @@ const Dashboard: React.FC = () => {
   return (
     <div style={{ padding: '0 0 40px 0' }}>
       {/* Welcome Banner */}
-      <Row gutter={[24, 24]} style={{ marginBottom: 24 }}>
-        <Col xs={24}>
-          <StyledCard bodyStyle={{ padding: '30px 24px' }}>
-            <Row gutter={[24, 24]} align='middle'>
-              <Col xs={24} md={16}>
+      <StyledBanner>
+        <Row
+          gutter={[24, 24]}
+          align='middle'
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <Col xs={24} md={16}>
+            <div>
+              <Title level={3} style={{ marginBottom: 8, color: 'white' }}>
+                Welcome back, {userData.name}! 👋
+              </Title>
+              <Paragraph
+                style={{
+                  fontSize: 16,
+                  marginBottom: 16,
+                  color: 'rgba(255, 255, 255, 0.85)',
+                }}
+              >
+                Continue your learning journey and improve your math skills
+                today.
+              </Paragraph>
+
+              <StreakBadge>
+                <FireOutlined /> {userData.streak} Day Streak!
+              </StreakBadge>
+            </div>
+          </Col>
+          <Col xs={24} md={8}>
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
+                <Statistic
+                  title={<span style={{ color: 'white' }}>Today's XP</span>}
+                  value={userData.todayXP}
+                  suffix='XP'
+                  valueStyle={{ color: 'white' }}
+                  prefix={<RocketOutlined />}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title={<span style={{ color: 'white' }}>Level</span>}
+                  value={userData.level}
+                  valueStyle={{ color: 'white' }}
+                  prefix={<TrophyOutlined />}
+                />
+              </Col>
+              <Col span={24}>
                 <div>
-                  <Title level={3} style={{ marginBottom: 8 }}>
-                    Welcome back, {userData.name}! 👋
-                  </Title>
-                  <Paragraph style={{ fontSize: 16, marginBottom: 16 }}>
-                    Continue your learning journey and improve your math skills
-                    today.
-                  </Paragraph>
-
-                  <StreakBadge>
-                    <FireOutlined /> {userData.streak} Day Streak!
-                  </StreakBadge>
-
-                  {/* <Space wrap>
-                    <Button
-                      type='primary'
-                      size='large'
-                      icon={<RocketOutlined />}
-                    >
-                      Continue Learning
-                    </Button>
-                    <Button size='large'>View Progress</Button>
-                  </Space> */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: 4,
+                      color: 'white',
+                    }}
+                  >
+                    <Text style={{ color: 'white' }}>Weekly Goal</Text>
+                    <Text style={{ color: 'white' }}>
+                      {userData.weeklyGoalProgress}%
+                    </Text>
+                  </div>
+                  <Progress
+                    percent={userData.weeklyGoalProgress}
+                    showInfo={false}
+                    strokeColor={{
+                      '0%': '#ffffff',
+                      '100%': '#87d068',
+                    }}
+                    trailColor='rgba(255,255,255,0.3)'
+                    strokeWidth={8}
+                  />
                 </div>
               </Col>
-              <Col xs={24} md={8}>
-                <Row gutter={[16, 16]}>
-                  <Col span={12}>
-                    <Statistic
-                      title="Today's XP"
-                      value={userData.todayXP}
-                      suffix='XP'
-                      valueStyle={{ color: '#722ed1' }}
-                      prefix={<RocketOutlined />}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Statistic
-                      title='Level'
-                      value={userData.level}
-                      valueStyle={{ color: '#52c41a' }}
-                      prefix={<TrophyOutlined />}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginBottom: 4,
-                        }}
-                      >
-                        <Text>Weekly Goal</Text>
-                        <Text>{userData.weeklyGoalProgress}%</Text>
-                      </div>
-                      <Progress
-                        percent={userData.weeklyGoalProgress}
-                        showInfo={false}
-                        strokeColor={{
-                          '0%': '#108ee9',
-                          '100%': '#87d068',
-                        }}
-                        strokeWidth={8}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </Col>
             </Row>
-          </StyledCard>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </StyledBanner>
 
       {/* Main Content */}
       <Row gutter={[24, 24]}>

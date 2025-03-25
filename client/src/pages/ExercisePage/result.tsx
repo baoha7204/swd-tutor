@@ -172,7 +172,7 @@ const getRecommendations = (incorrectExerciseIds: string[]) => {
   return {
     title: 'Areas to Improve',
     description:
-      'Based on your performance, our AI recommends focusing on these areas:',
+      'Based on your performance, our Math Assistant recommends focusing on these areas:',
     items: [
       {
         title: 'Review These Concepts',

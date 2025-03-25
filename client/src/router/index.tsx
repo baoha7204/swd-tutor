@@ -25,6 +25,8 @@ import SubTopicsPage from '@/pages/SubTopicsPage';
 import ModulesPage from '@/pages/ModulesPage';
 import ExercisePage from '@/pages/ExercisePage';
 import ResultPage from '@/pages/ExercisePage/result';
+
+import AIChatBox from '@/pages/AIChatBox';
 // import ReviewPage from '@/pages/ReviewPage';
 // import CommunityPage from '@/pages/CommunityPage';
 // import ProfilePage from '@/pages/ProfilePage';
@@ -113,6 +115,8 @@ const Router = () => {
               path: 'topics/:topicId/subtopics/:subtopicId/modules/:moduleId/result',
               element: <ResultPage />,
             },
+            // AI Chat Box
+            { path: 'ai-chat', element: <AIChatBox /> },
           ],
         },
         // Admin route
