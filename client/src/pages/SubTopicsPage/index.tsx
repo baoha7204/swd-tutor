@@ -347,7 +347,7 @@ const SubTopicsPage: React.FC = () => {
 
   return (
     <div>
-      <Breadcrumb style={{ marginBottom: 16 }}>
+      {/* <Breadcrumb style={{ marginBottom: 16 }}>
         <Breadcrumb.Item>
           <Link to='/'>Home</Link>
         </Breadcrumb.Item>
@@ -355,7 +355,7 @@ const SubTopicsPage: React.FC = () => {
           <Link to='/topics'>Topics</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>{topic.name}</Breadcrumb.Item>
-      </Breadcrumb>
+      </Breadcrumb> */}
 
       <Title level={2}>{topic.name}</Title>
       <Paragraph type='secondary' style={{ marginBottom: 24 }}>
@@ -374,10 +374,10 @@ const SubTopicsPage: React.FC = () => {
         </Col>
         <Col xs={24} md={8}>
           <StyledCard>
-            <Title level={5}>Total Lessons</Title>
+            <Title level={5}>Total Modules</Title>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <FunctionOutlined />
-              <Text>{topic.totalLessons} lessons</Text>
+              <Text>{topic.totalLessons} modules</Text>
             </div>
           </StyledCard>
         </Col>
@@ -389,7 +389,7 @@ const SubTopicsPage: React.FC = () => {
         </Col>
       </Row>
 
-      <Title level={4} style={{ margin: '32px 0 16px' }}>
+      {/* <Title level={4} style={{ margin: "32px 0 16px" }}>
         Historical Context
       </Title>
       <Row gutter={[24, 24]}>
@@ -398,17 +398,17 @@ const SubTopicsPage: React.FC = () => {
             <HistoricalFigure>
               <CircleAvatar>
                 <img
-                  src={figure.image || '/placeholder.svg'}
+                  src={figure.image || "/placeholder.svg"}
                   alt={figure.name}
                 />
               </CircleAvatar>
               <Text strong>{figure.name}</Text>
-              <Text type='secondary'>{figure.title}</Text>
-              <Text type='secondary'>({figure.years})</Text>
+              <Text type="secondary">{figure.title}</Text>
+              <Text type="secondary">({figure.years})</Text>
             </HistoricalFigure>
           </Col>
         ))}
-      </Row>
+      </Row> */}
 
       <Title level={4} style={{ margin: '32px 0 16px' }}>
         Learning Path
@@ -439,7 +439,7 @@ const SubTopicsPage: React.FC = () => {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <FunctionOutlined />
-                  <Text type='secondary'>{subTopic.lessons} lessons</Text>
+                  <Text type='secondary'>{subTopic.lessons} modules</Text>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <ClockCircleOutlined />

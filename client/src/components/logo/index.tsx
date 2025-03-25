@@ -31,7 +31,7 @@ const Logo: React.FC<LogoProps> = ({ collapsed }) => {
   return (
     <LogoContainer to='/'>
       <LogoIcon>
-        <img src='./public/Vector.png' alt='MathGenius' />
+        <img src='/Vector.png' alt='MathGenius Logo' loading='lazy' />
       </LogoIcon>
       {!collapsed && <LogoText>MathGenius</LogoText>}
     </LogoContainer>

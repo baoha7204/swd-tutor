@@ -306,7 +306,7 @@ const ModulesPage: React.FC = () => {
 
   return (
     <div>
-      <Breadcrumb style={{ marginBottom: 16 }}>
+      {/* <Breadcrumb style={{ marginBottom: 16 }}>
         <Breadcrumb.Item>
           <Link to='/'>Home</Link>
         </Breadcrumb.Item>
@@ -317,7 +317,7 @@ const ModulesPage: React.FC = () => {
           <Link to={`/topics/${topicId}`}>{topic.name}</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>{subtopic.name}</Breadcrumb.Item>
-      </Breadcrumb>
+      </Breadcrumb> */}
 
       <Title level={2}>{subtopic.name}</Title>
       <Paragraph type='secondary' style={{ marginBottom: 24 }}>
@@ -338,7 +338,7 @@ const ModulesPage: React.FC = () => {
               <Title level={4} style={{ margin: 0 }}>
                 Course Progress
               </Title>
-              <Text type='secondary'>{subtopic.progress}%</Text>
+              <Text type='secondary'>{Math.round(subtopic.progress)}%</Text>
             </div>
             <Progress percent={subtopic.progress} strokeColor={topic.color} />
           </StyledCard>

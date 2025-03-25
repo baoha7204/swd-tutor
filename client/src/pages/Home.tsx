@@ -177,7 +177,7 @@ const HomePage: React.FC = () => {
                 Start learning free
               </Button>
             </Link>
-            <Button size='large'>Xem demo</Button>
+            <Button size='large'>Watch demo</Button>
           </div>
         </HeroContent>
         <HeroImage>
@@ -267,7 +267,7 @@ const HomePage: React.FC = () => {
             <TestimonialCard bordered={false}>
               <TestimonialHeader>
                 <TestimonialAvatar>
-                  <img src='./public/avatar.png' alt='Nguyễn Anh Tuấn' />
+                  <img src='/avatar.png' alt='Nguyễn Anh Tuấn' />
                 </TestimonialAvatar>
                 <TestimonialHeaderContent>
                   <Title
@@ -291,7 +291,7 @@ const HomePage: React.FC = () => {
             <TestimonialCard bordered={false}>
               <TestimonialHeader>
                 <TestimonialAvatar>
-                  <img src='./public/avatar.png' alt='Trần Thu Hà' />
+                  <img src='/avatar.png' alt='Trần Thu Hà' />
                 </TestimonialAvatar>
                 <TestimonialHeaderContent>
                   <Title
@@ -316,7 +316,7 @@ const HomePage: React.FC = () => {
             <TestimonialCard bordered={false}>
               <TestimonialHeader>
                 <TestimonialAvatar>
-                  <img src='./public/avatar.png' alt='Lê Văn Minh' />
+                  <img src='/avatar.png' alt='Lê Văn Minh' />
                 </TestimonialAvatar>
                 <TestimonialHeaderContent>
                   <Title

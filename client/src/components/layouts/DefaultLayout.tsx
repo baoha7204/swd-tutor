@@ -31,7 +31,7 @@ const StyledHeader = styled(Header)`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 99;
   height: 64px;
 `;
 
@@ -121,10 +121,10 @@ const DefaultLayout: React.FC = () => {
 
   const navItems = [
     { key: 'home', label: 'Home', path: '/' },
-    { key: 'review', label: 'Review', path: '/review' },
-    { key: 'lessons', label: 'Lessons', path: '/topics' },
+    // { key: "review", label: "Review", path: "/review" },
+    { key: 'topics', label: 'Topics', path: '/topics' },
     { key: 'dashboard', label: 'Dashboard', path: '/dashboard' },
-    { key: 'community', label: 'Community', path: '/community' },
+    // { key: "community", label: "Community", path: "/community" },
   ];
 
   return (
@@ -165,6 +165,7 @@ const DefaultLayout: React.FC = () => {
                 shape='circle'
               />
             </Badge>
+
             <Badge
               count={<TrophyOutlined style={{ color: '#faad14' }} />}
               offset={[-2, 4]}
@@ -175,7 +176,7 @@ const DefaultLayout: React.FC = () => {
             </Badge>
             <Dropdown menu={{ items: userMenuItems }} placement='bottomRight'>
               <Avatar
-                src='./public/avatar.png'
+                src='/avatar.png'
                 size='default'
                 style={{ cursor: 'pointer' }}
               />
@@ -185,10 +186,10 @@ const DefaultLayout: React.FC = () => {
 
           {/* {!currentUser && (
             <>
-              <Button type='link' onClick={() => navigate('/login')}>
+              <Button type="link" onClick={() => navigate("/login")}>
                 Login
               </Button>
-              <Button type='primary' onClick={() => navigate('/register')}>
+              <Button type="primary" onClick={() => navigate("/register")}>
                 Sign Up
               </Button>
             </>

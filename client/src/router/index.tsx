@@ -24,6 +24,7 @@ import TopicsPage from '@/pages/TopicsPage';
 import SubTopicsPage from '@/pages/SubTopicsPage';
 import ModulesPage from '@/pages/ModulesPage';
 import ExercisePage from '@/pages/ExercisePage';
+import ResultPage from '@/pages/ExercisePage/result';
 // import ReviewPage from '@/pages/ReviewPage';
 // import CommunityPage from '@/pages/CommunityPage';
 // import ProfilePage from '@/pages/ProfilePage';
@@ -107,6 +108,10 @@ const Router = () => {
             {
               path: 'topics/:topicId/subtopics/:subtopicId/modules/:moduleId',
               element: <ExercisePage />,
+            },
+            {
+              path: 'topics/:topicId/subtopics/:subtopicId/modules/:moduleId/result',
+              element: <ResultPage />,
             },
           ],
         },
