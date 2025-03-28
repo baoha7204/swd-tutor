@@ -1,6 +1,6 @@
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import authApi from "@/api/auth.api";
+import authApi from '@/api/auth.api';
 
 export type User = {
   id: string;
@@ -40,7 +40,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const res = await authApi.fetchSelf();
       setCurrentUser(res.currentUser);
     } catch (error) {
-      console.error("Failed to fetch current user:", error);
+      console.error('Failed to fetch current user:', error);
       setCurrentUser(null);
     } finally {
       setIsLoading(false);
@@ -57,7 +57,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await authApi.login({ email, password });
       setCurrentUser(response);
     } catch (error) {
-      console.error("Failed to login:", error);
+      console.error('Failed to login:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -81,7 +81,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         gender,
       });
     } catch (error) {
-      console.error("Failed to register:", error);
+      console.error('Failed to register:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -94,7 +94,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await authApi.logout();
       setCurrentUser(null);
     } catch (error) {
-      console.error("Failed to log out:", error);
+      console.error('Failed to log out:', error);
       throw error;
     } finally {
       setIsLoading(false);
